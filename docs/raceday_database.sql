@@ -157,3 +157,25 @@ INSERT INTO Events (OrganiserID, CategoryID, [Name], Description, Location, Rout
 (1, 2, 'Joburg Charity Walk 5km',   'A fun 5km community walk raising funds for local schools.',             'Zoo Lake, Johannesburg', 'Flat circular route around Zoo Lake Park.',                     '2026-09-20', '07:30', 500,   0.00),
 (2, 3, 'Cape Town Cycle Tour 109km','South Africa''s most iconic road cycling event around the Peninsula.', 'Cape Town, Western Cape','Grand Parade through Chapman''s Peak to Cape Town CBD.',        '2026-03-08', '07:00', 35000, 850.00);
 GO
+
+-- Enrolments (ParticipantID 1=Lebo 2=Thabo 3=Zanele 4=David)
+INSERT INTO Enrolments (ParticipantID, EventID, [Status]) VALUES
+(1, 1, 'Confirmed'),
+(2, 1, 'Confirmed'),
+(3, 1, 'Confirmed'),
+(4, 1, 'Confirmed'),
+(1, 2, 'Confirmed'),
+(2, 3, 'Confirmed'),
+(4, 3, 'Confirmed');
+GO
+
+-- Results (EnrolmentID 1-7 matching enrolments above in order)
+INSERT INTO Results (EnrolmentID, FinishTime, [Position], Notes) VALUES
+(1, '03:42:15', 3,  'Age category medal winner'),
+(2, '04:01:30', 8,  'Personal best'),
+(3, '03:55:44', 5,  'Strong finish'),
+(4, '02:58:10', 1,  'Overall winner'),
+(5, '00:52:10', 1,  'First finisher'),
+(6, '02:15:33', 12, 'Completed the 109km'),
+(7, '01:58:02', 3,  'Top 5 in age group');
+GO
