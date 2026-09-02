@@ -35,3 +35,24 @@ CREATE TABLE Users (
     CreatedAt    DATETIME      NOT NULL DEFAULT GETDATE()
 );
 GO
+
+-- TABLE 2: Organisers - extra profile for Organiser users (1:1 with Users)
+CREATE TABLE Organisers (
+    OrganiserID   INT           IDENTITY(1,1) PRIMARY KEY,
+    UserID        INT           NOT NULL UNIQUE,
+    Organisation  NVARCHAR(150) NOT NULL,
+    ContactPhone  NVARCHAR(20)  NULL,
+    CONSTRAINT FK_Organisers_Users FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+GO
+
+-- TABLE 3: Participants - extra profile for Participant users (1:1 with Users)
+CREATE TABLE Participants (
+    ParticipantID    INT           IDENTITY(1,1) PRIMARY KEY,
+    UserID           INT           NOT NULL UNIQUE,
+    DateOfBirth      DATE          NULL,
+    Gender           NVARCHAR(10)  NULL CHECK (Gender IN ('Male', 'Female', 'Other')),
+    EmergencyContact NVARCHAR(100) NULL,
+    CONSTRAINT FK_Participants_Users FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+GO
