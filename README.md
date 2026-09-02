@@ -25,10 +25,7 @@ A Participant can:
 
 ## Setup Instructions (SQL Script)
 
-1. Open SQL Server Management Studio (SSMS)
-2. Open `docs/raceday_database.sql`
-3. Press **F5** to execute the script
-4. The `RaceDay` database will be created with all tables and seed data
+- The `RaceDay` database will be created with all tables and seed data
 
 ## CI/CD Screenshot
 
