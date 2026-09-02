@@ -115,3 +115,31 @@ CREATE TABLE Results (
         REFERENCES Enrolments(EnrolmentID) ON DELETE CASCADE
 );
 GO
+
+-- ============================================================
+-- SEED DATA
+-- ============================================================
+
+-- Users: 2 Organisers + 4 Participants
+INSERT INTO Users (FullName, Email, PasswordHash, [Role]) VALUES
+('Sipho Dlamini',  'sipho@raceza.co.za',    'hash_sipho_001',  'Organiser'),
+('Fatima Mokoena', 'fatima@capesport.co.za','hash_fatima_002', 'Organiser'),
+('Lebo Khumalo',   'lebo@gmail.com',        'hash_lebo_003',   'Participant'),
+('Thabo Nkosi',    'thabo@gmail.com',       'hash_thabo_004',  'Participant'),
+('Zanele Sithole', 'zanele@hotmail.com',    'hash_zanele_005', 'Participant'),
+('David van Wyk',  'david@runner.co.za',    'hash_david_006',  'Participant');
+GO
+
+-- Organisers: UserID 1=Sipho, 2=Fatima
+INSERT INTO Organisers (UserID, Organisation, ContactPhone) VALUES
+(1, 'RaceZA Events',         '011 555 0101'),
+(2, 'Cape Sport Collective', '021 555 0202');
+GO
+
+-- Participants: UserID 3=Lebo, 4=Thabo, 5=Zanele, 6=David
+INSERT INTO Participants (UserID, DateOfBirth, Gender, EmergencyContact) VALUES
+(3, '1995-03-14', 'Female', 'Mama Khumalo - 082 111 2222'),
+(4, '1990-07-22', 'Male',   'Sarah Nkosi - 083 333 4444'),
+(5, '1998-11-05', 'Female', 'Baba Sithole - 074 555 6666'),
+(6, '1985-01-30', 'Male',   'Anna van Wyk - 071 777 8888');
+GO
