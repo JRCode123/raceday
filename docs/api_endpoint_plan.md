@@ -37,3 +37,15 @@
 | PUT | /api/events/{id} | Update an event. Only the Organiser who created it can edit. | Organiser | `{ name, description, location, route, eventDate, startTime, maxParticipants, entryFee, isActive }` | 200 OK — updated event · 403 Forbidden · 404 Not Found |
 | DELETE | /api/events/{id} | Delete an event. Only the owning Organiser can delete. | Organiser | None | 200 OK — `{ message: "Event deleted" }` · 403 Forbidden · 404 Not Found |
 | GET | /api/events/{id}/enrolments | List all participants enrolled in a specific event. | Organiser | None | 200 OK — array of enrolments · 403 Forbidden · 404 Not Found |
+
+---
+
+## 4. Categories
+
+| HTTP Method | Route | Description | Role Required | Request Body | Expected Response |
+|---|---|---|---|---|---|
+| GET | /api/categories | Get all event categories. Used to populate dropdowns. | None | None | 200 OK — array of categories · 500 Internal Server Error |
+| GET | /api/categories/{id} | Get one category with its list of events. | None | None | 200 OK — category object · 404 Not Found |
+| POST | /api/categories | Create a new category. | Organiser | `{ name, description, sport }` | 201 Created — new category · 400 Bad Request · 403 Forbidden |
+| PUT | /api/categories/{id} | Update a category. Only the Organiser who created it can update. | Organiser | `{ name, description, sport }` | 200 OK — updated category · 403 Forbidden · 404 Not Found |
+| DELETE | /api/categories/{id} | Delete a category. Fails if events are still linked to it. | Organiser | None | 200 OK — `{ message: "Category deleted" }` · 409 Conflict — events still linked · 403 Forbidden · 404 Not Found |
