@@ -87,3 +87,31 @@ CREATE TABLE Events (
     CONSTRAINT FK_Events_Categories FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
 );
 GO
+
+-- TABLE 6: Enrolments - many-to-many bridge between Participants and Events
+-- No CASCADE on FKs to prevent SQL Server Error 1785 (multiple cascade paths)
+CREATE TABLE Enrolments (
+    EnrolmentID   INT          IDENTITY(1,1) PRIMARY KEY,
+    ParticipantID INT          NOT NULL,
+    EventID       INT          NOT NULL,
+    EnrolledAt    DATETIME     NOT NULL DEFAULT GETDATE(),
+    [Status]      NVARCHAR(20) NOT NULL DEFAULT 'Confirmed'
+                  CHECK ([Status] IN ('Confirmed', 'Cancelled', 'Waitlisted')),
+    CONSTRAINT UQ_Enrolments UNIQUE (ParticipantID, EventID),
+    CONSTRAINT FK_Enrolments_Participants FOREIGN KEY (ParticipantID) REFERENCES Participants(ParticipantID),
+    CONSTRAINT FK_Enrolments_Events FOREIGN KEY (EventID) REFERENCES Events(EventID)
+);
+GO
+
+-- TABLE 7: Results - post-race results captured by Organisers (1:1 with Enrolments)
+CREATE TABLE Results (
+    ResultID    INT           IDENTITY(1,1) PRIMARY KEY,
+    EnrolmentID INT           NOT NULL UNIQUE,
+    FinishTime  NVARCHAR(20)  NOT NULL,
+    [Position]  INT           NULL,
+    Notes       NVARCHAR(500) NULL,
+    RecordedAt  DATETIME      NOT NULL DEFAULT GETDATE(),
+    CONSTRAINT FK_Results_Enrolments FOREIGN KEY (EnrolmentID)
+        REFERENCES Enrolments(EnrolmentID) ON DELETE CASCADE
+);
+GO
