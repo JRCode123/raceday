@@ -143,3 +143,17 @@ INSERT INTO Participants (UserID, DateOfBirth, Gender, EmergencyContact) VALUES
 (5, '1998-11-05', 'Female', 'Baba Sithole - 074 555 6666'),
 (6, '1985-01-30', 'Male',   'Anna van Wyk - 071 777 8888');
 GO
+
+-- Categories
+INSERT INTO Categories (OrganiserID, [Name], Description, Sport) VALUES
+(1, 'Road Running', 'All on-road running events from 5km to marathon distance', 'Running'),
+(1, 'Charity Walk',  'Community walking events open to all fitness levels',       'Walking'),
+(2, 'Road Cycling',  'Timed road cycling events and sportive rides',              'Cycling');
+GO
+
+-- Events (minimum 3 required)
+INSERT INTO Events (OrganiserID, CategoryID, [Name], Description, Location, Route, EventDate, StartTime, MaxParticipants, EntryFee) VALUES
+(1, 1, 'Soweto Marathon 2026',      'The famous 42.2km marathon through the streets of Soweto.',             'Soweto, Johannesburg',  'FNB Stadium through Diepkloof to Orlando Stadium.',             '2026-11-01', '06:00', 15000, 350.00),
+(1, 2, 'Joburg Charity Walk 5km',   'A fun 5km community walk raising funds for local schools.',             'Zoo Lake, Johannesburg', 'Flat circular route around Zoo Lake Park.',                     '2026-09-20', '07:30', 500,   0.00),
+(2, 3, 'Cape Town Cycle Tour 109km','South Africa''s most iconic road cycling event around the Peninsula.', 'Cape Town, Western Cape','Grand Parade through Chapman''s Peak to Cape Town CBD.',        '2026-03-08', '07:00', 35000, 850.00);
+GO
