@@ -179,3 +179,31 @@ INSERT INTO Results (EnrolmentID, FinishTime, [Position], Notes) VALUES
 (6, '02:15:33', 12, 'Completed the 109km'),
 (7, '01:58:02', 3,  'Top 5 in age group');
 GO
+
+-- ============================================================
+-- VERIFICATION QUERIES
+-- ============================================================
+
+SELECT 'Users'        AS TableName, COUNT(*) AS TotalRows FROM Users        UNION ALL
+SELECT 'Organisers',               COUNT(*)              FROM Organisers    UNION ALL
+SELECT 'Participants',             COUNT(*)              FROM Participants   UNION ALL
+SELECT 'Categories',              COUNT(*)              FROM Categories     UNION ALL
+SELECT 'Events',                  COUNT(*)              FROM Events         UNION ALL
+SELECT 'Enrolments',              COUNT(*)              FROM Enrolments     UNION ALL
+SELECT 'Results',                 COUNT(*)              FROM Results;
+GO
+
+SELECT e.[Name] AS EventName, e.EventDate, e.Location, e.EntryFee,
+       c.[Name] AS Category, u.FullName AS OrganiserName
+FROM Events e
+JOIN Categories c ON e.CategoryID  = c.CategoryID
+JOIN Organisers o ON e.OrganiserID = o.OrganiserID
+JOIN Users      u ON o.UserID      = u.UserID;
+GO
+
+SELECT u.FullName AS Participant, ev.[Name] AS Event, en.[Status], en.EnrolledAt
+FROM Enrolments en
+JOIN Participants p  ON en.ParticipantID = p.ParticipantID
+JOIN Users       u  ON p.UserID          = u.UserID
+JOIN Events      ev ON en.EventID        = ev.EventID;
+GO
