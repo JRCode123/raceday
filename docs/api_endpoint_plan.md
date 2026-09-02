@@ -49,3 +49,41 @@
 | POST | /api/categories | Create a new category. | Organiser | `{ name, description, sport }` | 201 Created — new category · 400 Bad Request · 403 Forbidden |
 | PUT | /api/categories/{id} | Update a category. Only the Organiser who created it can update. | Organiser | `{ name, description, sport }` | 200 OK — updated category · 403 Forbidden · 404 Not Found |
 | DELETE | /api/categories/{id} | Delete a category. Fails if events are still linked to it. | Organiser | None | 200 OK — `{ message: "Category deleted" }` · 409 Conflict — events still linked · 403 Forbidden · 404 Not Found |
+
+---
+
+## 5. Event Enrolments
+
+| HTTP Method | Route | Description | Role Required | Request Body | Expected Response |
+|---|---|---|---|---|---|
+| GET | /api/enrolments | Get all enrolments for the logged-in Participant. | Participant | None | 200 OK — array of enrolments with event name, date, status · 403 Forbidden |
+| POST | /api/enrolments | Enrol the logged-in Participant in an event. | Participant | `{ eventId }` | 201 Created — enrolment object · 400 Bad Request — already enrolled · 409 Conflict — event is full · 404 Not Found |
+| DELETE | /api/enrolments/{id} | Cancel an enrolment (withdraw from an event). | Participant | None | 200 OK — `{ message: "Enrolment cancelled" }` · 403 Forbidden · 404 Not Found |
+
+---
+
+## 6. Results
+
+| HTTP Method | Route | Description | Role Required | Request Body | Expected Response |
+|---|---|---|---|---|---|
+| GET | /api/results/my | Get all race results for the logged-in Participant. | Participant | None | 200 OK — array of results with event name, finish time, position · 403 Forbidden |
+| GET | /api/results/event/{eventId} | Get all results for a specific event ordered by position. | Any | None | 200 OK — array of results · 404 Not Found |
+| POST | /api/results | Capture a result for a participant in the Organiser's event. | Organiser | `{ enrolmentId, finishTime, position, notes }` | 201 Created — result object · 400 Bad Request · 403 Forbidden · 409 Conflict — result already exists |
+| PUT | /api/results/{id} | Correct a previously captured result. | Organiser | `{ finishTime, position, notes }` | 200 OK — updated result · 403 Forbidden · 404 Not Found |
+| DELETE | /api/results/{id} | Delete a result record. | Organiser | None | 200 OK — `{ message: "Result deleted" }` · 403 Forbidden · 404 Not Found |
+
+---
+
+## Summary
+
+| Resource | Endpoints |
+|---|---|
+| Authentication | 2 |
+| User Profile | 3 |
+| Events | 6 |
+| Categories | 5 |
+| Enrolments | 3 |
+| Results | 5 |
+| **Total** | **24** |
+
+*This plan was written before any Part 2 code was produced, as required by the assignment.*
