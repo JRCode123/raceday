@@ -29,7 +29,7 @@ A Participant can:
 
 ## CI/CD Screenshot
 
-*(Add a screenshot of the green Actions build here after your first push)*
+<img width="1916" height="982" alt="Screenshot 2026-09-02 204155" src="https://github.com/user-attachments/assets/2d82d186-70cd-4820-beaa-d13120897cd6" />
 
 ## Video Presentation
 
