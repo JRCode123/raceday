@@ -1,0 +1,95 @@
+# ============================================================
+# GitHub Actions CI/CD Workflow — RaceDay Part 1
+# This workflow runs automatically every time you push to GitHub.
+# It checks that all required planning documents are present
+# in the /docs folder, as required by the assignment.
+# ============================================================
+
+name: Validate Part 1 Submission Structure
+
+# When does this workflow run?
+# - Every time you push code to the main branch
+# - Every time you open or update a Pull Request
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-docs-folder:
+    # Run on the latest Ubuntu virtual machine provided by GitHub
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out (download) your repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Check that the /docs folder exists
+      - name: Check that /docs folder exists
+        run: |
+          echo "Checking that the /docs folder exists..."
+          if [ -d "docs" ]; then
+            echo "✅ /docs folder found."
+          else
+            echo "❌ ERROR: /docs folder is missing!"
+            exit 1
+          fi
+
+      # Step 3: Check that the ERD file is present
+      # The ERD must be a PNG or PDF inside /docs
+      - name: Check that ERD file is present
+        run: |
+          echo "Checking for ERD file (PDF or PNG)..."
+          if ls docs/*.pdf 2>/dev/null || ls docs/*.png 2>/dev/null; then
+            echo "✅ ERD file found."
+          else
+            echo "❌ ERROR: No ERD PDF or PNG file found in /docs!"
+            exit 1
+          fi
+
+      # Step 4: Check that the API endpoint plan is present
+      # It should be a .md or .pdf file
+      - name: Check that API endpoint plan is present
+        run: |
+          echo "Checking for API endpoint plan..."
+          if ls docs/api_endpoint_plan* 2>/dev/null; then
+            echo "✅ API endpoint plan found."
+          else
+            echo "❌ ERROR: api_endpoint_plan file not found in /docs!"
+            exit 1
+          fi
+
+      # Step 5: Check that the SQL database script is present
+      - name: Check that SQL script is present
+        run: |
+          echo "Checking for SQL script..."
+          if ls docs/*.sql 2>/dev/null; then
+            echo "✅ SQL script found."
+          else
+            echo "❌ ERROR: No .sql file found in /docs!"
+            exit 1
+          fi
+
+      # Step 6: Check that the README file exists at the root
+      - name: Check that README.md exists
+        run: |
+          echo "Checking for README.md..."
+          if [ -f "README.md" ]; then
+            echo "✅ README.md found."
+          else
+            echo "❌ ERROR: README.md is missing from the root of the repository!"
+            exit 1
+          fi
+
+      # Step 7: List all files found in /docs so we can see them in the log
+      - name: List /docs folder contents
+        run: |
+          echo ""
+          echo "📁 Contents of /docs folder:"
+          ls -la docs/
+          echo ""
+          echo "✅ All required files are present. Submission structure is valid!"
