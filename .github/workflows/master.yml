@@ -1,95 +1,90 @@
 # ============================================================
 # GitHub Actions CI/CD Workflow — RaceDay Part 1
-# This workflow runs automatically every time you push to GitHub.
-# It checks that all required planning documents are present
-# in the /docs folder, as required by the assignment.
+# Runs automatically on every push to the master branch.
+# Checks that all required planning documents are present.
 # ============================================================
 
 name: Validate Part 1 Submission Structure
 
-# When does this workflow run?
-# - Every time you push code to the main branch
-# - Every time you open or update a Pull Request
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   check-docs-folder:
-    # Run on the latest Ubuntu virtual machine provided by GitHub
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out (download) your repository code
+      # Step 1: Download the repository code onto the runner
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Check that the /docs folder exists
-      - name: Check that /docs folder exists
+      # Step 2: Confirm the /docs folder exists
+      - name: Check docs folder exists
         run: |
-          echo "Checking that the /docs folder exists..."
+          echo "Checking /docs folder..."
           if [ -d "docs" ]; then
-            echo "✅ /docs folder found."
+            echo "docs folder found"
           else
-            echo "❌ ERROR: /docs folder is missing!"
+            echo "ERROR: docs folder is missing"
             exit 1
           fi
 
-      # Step 3: Check that the ERD file is present
-      # The ERD must be a PNG or PDF inside /docs
-      - name: Check that ERD file is present
+      # Step 3: Confirm an ERD file (PNG or PDF) is inside /docs
+      - name: Check ERD file exists
         run: |
-          echo "Checking for ERD file (PDF or PNG)..."
-          if ls docs/*.pdf 2>/dev/null || ls docs/*.png 2>/dev/null; then
-            echo "✅ ERD file found."
+          echo "Checking for ERD file..."
+          ERD_COUNT=$(find docs -maxdepth 1 \( -name "*.png" -o -name "*.pdf" \) | wc -l)
+          if [ "$ERD_COUNT" -gt 0 ]; then
+            echo "ERD file found"
+            find docs -maxdepth 1 \( -name "*.png" -o -name "*.pdf" \)
           else
-            echo "❌ ERROR: No ERD PDF or PNG file found in /docs!"
+            echo "ERROR: No ERD PNG or PDF found in /docs"
             exit 1
           fi
 
-      # Step 4: Check that the API endpoint plan is present
-      # It should be a .md or .pdf file
-      - name: Check that API endpoint plan is present
+      # Step 4: Confirm the API endpoint plan file is inside /docs
+      - name: Check API endpoint plan exists
         run: |
           echo "Checking for API endpoint plan..."
-          if ls docs/api_endpoint_plan* 2>/dev/null; then
-            echo "✅ API endpoint plan found."
+          if [ -f "docs/api_endpoint_plan.md" ]; then
+            echo "api_endpoint_plan.md found"
           else
-            echo "❌ ERROR: api_endpoint_plan file not found in /docs!"
+            echo "ERROR: api_endpoint_plan.md not found in /docs"
             exit 1
           fi
 
-      # Step 5: Check that the SQL database script is present
-      - name: Check that SQL script is present
+      # Step 5: Confirm the SQL script is inside /docs
+      - name: Check SQL script exists
         run: |
           echo "Checking for SQL script..."
-          if ls docs/*.sql 2>/dev/null; then
-            echo "✅ SQL script found."
+          SQL_COUNT=$(find docs -maxdepth 1 -name "*.sql" | wc -l)
+          if [ "$SQL_COUNT" -gt 0 ]; then
+            echo "SQL script found"
+            find docs -maxdepth 1 -name "*.sql"
           else
-            echo "❌ ERROR: No .sql file found in /docs!"
+            echo "ERROR: No .sql file found in /docs"
             exit 1
           fi
 
-      # Step 6: Check that the README file exists at the root
-      - name: Check that README.md exists
+      # Step 6: Confirm the README exists at the root
+      - name: Check README exists
         run: |
           echo "Checking for README.md..."
           if [ -f "README.md" ]; then
-            echo "✅ README.md found."
+            echo "README.md found"
           else
-            echo "❌ ERROR: README.md is missing from the root of the repository!"
+            echo "ERROR: README.md missing from root"
             exit 1
           fi
 
-      # Step 7: List all files found in /docs so we can see them in the log
-      - name: List /docs folder contents
+      # Step 7: Print all files in /docs for the log
+      - name: List docs folder contents
         run: |
-          echo ""
-          echo "📁 Contents of /docs folder:"
+          echo "Contents of /docs folder:"
           ls -la docs/
-          echo ""
-          echo "✅ All required files are present. Submission structure is valid!"
+          echo "All checks passed - submission structure is valid"
