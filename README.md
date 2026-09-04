@@ -32,7 +32,7 @@ A Participant can:
 
 ## CI/CD Screenshot
 
-<img width="1916" height="982" alt="Screenshot 2026-09-02 204155" src="https://github.com/user-attachments/assets/2d82d186-70cd-4820-beaa-d13120897cd6" />
+<img width="1917" height="1030" alt="Screenshot 2026-09-04 075618" src="https://github.com/user-attachments/assets/1cae13da-659b-4c46-a9eb-f0254ca03432" />
 
 ## Video Presentation
 
